@@ -14,7 +14,7 @@ $(document).ready(function(){
         })
     }
 
-    $.when(ajaxC('reckful'), ajaxC('nl_kripp'), ajaxC('arteezy'), ajaxC('reynad27'), ajaxC('leveluplive'), ajaxC('trumpsc')).done(function(a1, a2, a3, a4, a5, a6){
+    $.when(ajaxC('reckful'), ajaxC('nl_kripp'), ajaxC('arteezy'), ajaxC('reynad27'), ajaxC('leveluplive'), ajaxC('trumpsc'), ajaxC('admiralbulldog'), ajaxC('freecodecamp')).done(function(a1, a2, a3, a4, a5, a6, a7, a8){
 
         function formatName(url){
             var name = url.slice(38);
