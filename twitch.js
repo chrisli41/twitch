@@ -14,28 +14,42 @@ $(document).ready(function(){
         })
     }
 
-    $.when(ajaxC('reckful'), ajaxC('nl_kripp'), ajaxC('arteezy'), ajaxC('reynad27')).done(function(a1, a2, a3, a4){
+    $.when(ajaxC('reckful'), ajaxC('nl_kripp'), ajaxC('arteezy'), ajaxC('reynad27'), ajaxC('leveluplive'), ajaxC('trumpsc')).done(function(a1, a2, a3, a4, a5, a6){
 
-        console.log(a1);
-        console.log(a3);
+        function formatName(url){
+            var name = url.slice(38);
+            return name.substr(0,1).toUpperCase() + name.substr(1);
+        }
+
+        function convertHTML(obj){
+            var status = obj.status === 'Online' ? 'statusonline' : 'statusoffline';
+            var html = '<a href="' + obj.link + '"><div class="entry"><div class="left"><img src="' + obj.logo + '"/></div><div class="right"><span class="name">' + obj.name + '</span><span class="' + status + '">' + obj.status + '</span><span class="game">Currently Playing: ' + obj.game + '</span></div></div></a>'
+            $('#entries').append(html);
+
+        }
+
         var streams = [];
+        var offline = [];
+        var online = [];
 
         for(var i = 0; i < arguments.length; i++){
 
             var streamObj = arguments[i][0];
 
             if(streamObj.stream === null){
-                streams.push({
-                    'name': streamObj._links.channel,
+                offline.push({
+                    'name': formatName(streamObj._links.channel),
+                    'link': '#',
                     'status': 'Offline',
-                    'logo': '#',
+                    'logo': 'http://placehold.it/300x300',
                     'game': 'N/A'
                 });
             }
 
             else {
-                streams.push({
-                    'name': streamObj._links.channel,
+                online.push({
+                    'name': formatName(streamObj._links.channel),
+                    'link': streamObj.stream.channel.url,
                     'status': 'Online',
                     'logo': streamObj.stream.channel.logo,
                     'game': streamObj.stream.channel.game
@@ -43,15 +57,36 @@ $(document).ready(function(){
             }
         }
 
-        function convertHTML(obj){
-
-            var html = '<div class="entry"><div class="left"><img src="' + obj.logo + '"/></div><div class="right"><span class="name">' + obj.name + '</span><span class="status">' + obj.status + '</span><span class="game">' + obj.game + '</span></div></div>'
-            $('#entries').append(html);
-
-        }
-
+        streams = online.concat(offline);
         streams.forEach(convertHTML);
 
+
+        $('#all').click(function(){
+            $('#online').removeClass('active');
+            $('#offline').removeClass('active');
+            $(this).addClass('active');
+
+            $('#entries').html('');
+            streams.forEach(convertHTML);
+        });
+
+        $('#online').click(function(){
+            $('#all').removeClass('active');
+            $('#offline').removeClass('active');
+            $(this).addClass('active');
+
+            $('#entries').html('');
+            online.forEach(convertHTML);
+        });
+
+        $('#offline').click(function(){
+            $('#online').removeClass('active');
+            $('#all').removeClass('active');
+            $(this).addClass('active');
+
+            $('#entries').html('');
+            offline.forEach(convertHTML);
+        });
 
 
         /*
