@@ -14,7 +14,11 @@ $(document).ready(function(){
         })
     }
 
-    $.when(ajaxC('reckful'), ajaxC('nl_kripp'), ajaxC('arteezy'), ajaxC('reynad27'), ajaxC('leveluplive'), ajaxC('trumpsc'), ajaxC('admiralbulldog'), ajaxC('freecodecamp')).done(function(a1, a2, a3, a4, a5, a6, a7, a8){
+    $.when(ajaxC('reckful'), ajaxC('nl_kripp'), ajaxC('arteezy'), ajaxC('reynad27'), ajaxC('leveluplive'), ajaxC('trumpsc'), ajaxC('admiralbulldog'), ajaxC('PlayHearthstone'), ajaxC('freecodecamp')).done(function(a1, a2, a3, a4, a5, a6, a7, a8, a9){
+
+        function shorten(gameName){
+            return gameName.length > 27 ? gameName.slice(0,24) + '...' : gameName;
+        }
 
         function formatName(url){
             var name = url.slice(38);
@@ -23,7 +27,7 @@ $(document).ready(function(){
 
         function convertHTML(obj){
             var status = obj.status === 'Online' ? 'statusonline' : 'statusoffline';
-            var html = '<a href="' + obj.link + '"><div class="entry"><div class="left"><img src="' + obj.logo + '"/></div><div class="right"><span class="name">' + obj.name + '</span><span class="' + status + '">' + obj.status + '</span><span class="game">Currently Playing: ' + obj.game + '</span></div></div></a>'
+            var html = '<a href="' + obj.link + '"><div class="entry"><div class="left"><img src="' + obj.logo + '"/></div><div class="right"><span class="name">' + obj.name + '</span><span class="' + status + '">' + obj.status + '</span><span class="game">Currently Playing: ' + shorten(obj.game) + '</span></div></div></a>'
             $('#entries').append(html);
 
         }
